@@ -15,6 +15,6 @@ class Reservations extends Model
         'date',
         'pax',
         'status',
-        // 'request',
+        'request'
     ];
 }

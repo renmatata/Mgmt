@@ -50,8 +50,8 @@ class ReservationsResource extends Resource
                     ])
                     ->native(false)
                     ->required(),
-                // Forms\Components\TextInput::make('request')
-                //     ->required()
+                Forms\Components\TextInput::make('request')
+                    ->required()
             ]);
     }
 
@@ -71,8 +71,8 @@ class ReservationsResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
-                // Tables\Columns\TextColumn::make('request')
-                //     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('request')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
