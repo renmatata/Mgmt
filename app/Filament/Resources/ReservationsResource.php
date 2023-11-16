@@ -28,17 +28,30 @@ class ReservationsResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('type')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Select::make('type')
+                    ->options([
+                        'restaurant' => 'Restaurant',
+                        'venue' => 'Venue',
+                    ])
+                    ->native(false)
+                    ->required(),
                 Forms\Components\DatePicker::make('date')
+                    ->native(false)
+                    ->displayFormat('d/m/Y')
                     ->required(),
                 Forms\Components\TextInput::make('pax')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('status')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Select::make('status')
+                    ->options([
+                        'confirmed' => 'Confirmed',
+                        'pending' => 'Pending',
+                        'cancelled' => 'Cancelled',
+                    ])
+                    ->native(false)
+                    ->required(),
+                // Forms\Components\TextInput::make('request')
+                //     ->required()
             ]);
     }
 
@@ -58,6 +71,8 @@ class ReservationsResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
+                // Tables\Columns\TextColumn::make('request')
+                //     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

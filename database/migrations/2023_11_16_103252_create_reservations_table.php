@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('date');
             $table->integer('pax');
             $table->string('status');
+            // $table->string('request');
             $table->timestamps();
         });
     }
