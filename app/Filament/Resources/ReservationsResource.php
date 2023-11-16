@@ -17,7 +17,9 @@ class ReservationsResource extends Resource
 {
     protected static ?string $model = Reservations::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+
+    protected static ?string $slug = 'reservations';
 
     public static function form(Form $form): Form
     {
@@ -69,6 +71,7 @@ class ReservationsResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -90,6 +93,7 @@ class ReservationsResource extends Resource
         return [
             'index' => Pages\ListReservations::route('/'),
             'create' => Pages\CreateReservations::route('/create'),
+            'view' => Pages\ViewReservations::route('/{record}'),
             'edit' => Pages\EditReservations::route('/{record}/edit'),
         ];
     }
