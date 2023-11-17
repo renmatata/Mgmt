@@ -13,6 +13,7 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -94,14 +95,28 @@ class ReservationsResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
             ])
             ->filters([
-                //
+                SelectFilter::make('Type')
+                    ->options([
+                        'restaurant' => 'Restaurant',
+                        'venue' => 'Venue',
+                    ])
+                    ->native(false),
+                SelectFilter::make('Status')
+                    ->options([
+                        'confirmed' => 'Confirmed',
+                        'pending' => 'Pending',
+                        'cancelled' => 'Cancelled',
+                    ])
+                    ->native(false)
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
