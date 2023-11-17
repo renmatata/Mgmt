@@ -7,6 +7,9 @@ use App\Filament\Resources\ReservationsResource\RelationManagers;
 use App\Models\Reservations;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -25,9 +28,18 @@ class ReservationsResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('full_name')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('email')
+                    ->label('Email Address')
+                    ->email()
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('phone')
+                    ->label('Phone Number')
+                    ->tel()
+                    ->required(),
                 Forms\Components\Select::make('type')
                     ->options([
                         'restaurant' => 'Restaurant',
@@ -59,18 +71,24 @@ class ReservationsResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('full_name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('phone')
+                    ->numeric()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('type')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('date')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('pax')
-                    ->numeric()
-                    ->sortable(),
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('status')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('request')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
@@ -88,11 +106,34 @@ class ReservationsResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Section::make('Reservor Details')
+                    ->schema([
+                        TextEntry::make('full_name')->label('Full Name'),
+                        TextEntry::make('email')->label('Email'),
+                        TextEntry::make('phone')->label('Phone Number'),
+                    ])->columns(2),
+
+                Section::make('Booking Details')
+                    ->schema([
+                        TextEntry::make('type')->label('Type of Booking'),
+                        TextEntry::make('date')->label('Date'),
+                        TextEntry::make('pax')->label('Number of People'),
+                        TextEntry::make('status')->label('Status'),
+                        TextEntry::make('request')->label('Specal Request'),
+                    ])->columns(2)
             ]);
     }
 
@@ -108,7 +149,7 @@ class ReservationsResource extends Resource
         return [
             'index' => Pages\ListReservations::route('/'),
             'create' => Pages\CreateReservations::route('/create'),
-            'view' => Pages\ViewReservations::route('/{record}'),
+            // 'view' => Pages\ViewReservations::route('/{record}'),
             'edit' => Pages\EditReservations::route('/{record}/edit'),
         ];
     }

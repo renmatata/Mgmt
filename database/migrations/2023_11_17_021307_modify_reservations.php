@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('reservations', function (Blueprint $table) {
-            //
+            $table->string('full_name');
+            $table->string('email');
+            $table->integer('phone');
         });
     }
 
@@ -22,7 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('reservations', function (Blueprint $table) {
-            //
+            $table->dropColumn('full_name');
+            $table->dropColumn('email');
+            $table->dropColumn('phone');
         });
     }
 };
